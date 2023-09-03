@@ -13,8 +13,10 @@ export const Claim = () => {
 
   const { account, chainId, library } = useEthers()
 
+  
   const handleClaimClick = () => {
-    if (!merkleTree.claims[account]){
+    console.log({account}, ">>", account.toLocaleLowerCase(),  merkleTree.claims[account.toLocaleLowerCase()])
+    if (!merkleTree.claims[account.toLocaleLowerCase()]){
       toast.warn('Sorry, no claim available for this address..', {
         position: "top-center",
         autoClose: 5000,
@@ -27,9 +29,10 @@ export const Claim = () => {
       return null;
     }
 
-    const proof = merkleTree.claims[account];
+    const proof = merkleTree.claims[account.toLocaleLowerCase()];
 
-    const MERKEL_ADDRESS = chainId === ChainId.Mainnet ? merkleDistibutor_address_mainnet : chainId === ChainId.Rinkeby ? merkleDistibutor_address_rinkeby : '';
+    console.log({proof})
+    const MERKEL_ADDRESS = chainId === ChainId.Mainnet ? merkleDistibutor_address_mainnet : chainId === 97 ? merkleDistibutor_address_rinkeby : '';
   
     const t = async () => {
       const isClaimed = await fetchIsClaimed(library.getSigner(), MERKEL_ADDRESS, merkleDistibutor_abi, proof.index)
