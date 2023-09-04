@@ -12,16 +12,24 @@ import React, { useState } from "react";
 import { ChainId, useEthers } from "@usedapp/core";
 import { Claim } from "../lib/Claim";
 import { ToastContainer } from "react-toastify";
-import PTLogo from "../assets/res/pt-logo.png";
+import Logo from "../assets/images/logo.png";
+import { Catoshi_Mainnet, Catoshi_Testnet } from "../shared/config";
 
 export default function Home() {
   const [show, setShow] = useState(false);
   const { activateBrowserWallet, deactivate, account, chainId } = useEthers();
-  console.log({ chainId }, ChainId);
-  if (!show && account && chainId !== 42161 && chainId !== 421613) {
+
+  if (
+    !show &&
+    account &&
+    chainId !== Catoshi_Mainnet.chainID &&
+    chainId !== Catoshi_Testnet.chainID
+  ) {
     setShow(true);
   } else if (
-    (show && (chainId === 42161 || chainId === 421613)) ||
+    (show &&
+      (chainId === Catoshi_Mainnet.chainID ||
+        chainId === Catoshi_Testnet.chainID)) ||
     (show && !account)
   ) {
     setShow(false);
@@ -32,7 +40,7 @@ export default function Home() {
       <Head>
         <title>PT Merkle Claimer</title>
       </Head>
-      <Container>
+      <Container style={{ paddingTop: "10px" }}>
         <ToastContainer
           position="top-center"
           autoClose={5000}
@@ -47,24 +55,42 @@ export default function Home() {
         {show ? (
           <Alert variant="danger">
             <Alert.Heading>Unsupported Network</Alert.Heading>
-            <p>Please connect to Mainnet or Rinkeby.</p>
+            <p>
+              Please connect to {Catoshi_Mainnet.name} or {Catoshi_Testnet.name}
+              .
+            </p>
           </Alert>
         ) : null}
         <Row>
           <Col>
-            <h1 className="text-light">Retro Airdrop Claimer</h1>
+            <h1 className="text-light">Token Claimer</h1>
           </Col>
           <Col md={3} xs={6}>
-            <Image src={PTLogo} fluid />
+            <Image src={Logo} fluid />
           </Col>
         </Row>
         <Row>
           <Col>
             {account ? (
-              <Button onClick={() => deactivate()}>Disconnect</Button>
+              <Button
+                style={{
+                  background: "rgb(255,166,76,1)",
+                  color: "black",
+                  border: "none",
+                  fontSize: "18px",
+                }}
+                onClick={() => deactivate()}
+              >
+                Disconnect
+              </Button>
             ) : (
               <Button
-                variant="secondary"
+                style={{
+                  background: "rgb(255,166,76,1)",
+                  color: "black",
+                  border: "none",
+                  fontSize: "18px",
+                }}
                 onClick={() => activateBrowserWallet()}
               >
                 Connect
@@ -72,7 +98,7 @@ export default function Home() {
             )}
           </Col>
         </Row>
-        <Container>
+        <Container style={{ paddingTop: "60px" }}>
           <Row className="justify-content-md-between">
             <Card className="lg-card">
               <Card.Body>
@@ -82,7 +108,12 @@ export default function Home() {
                   <Claim />
                 ) : (
                   <Button
-                    variant="secondary"
+                    style={{
+                      background: "rgb(255,166,76,1)",
+                      color: "black",
+                      border: "none",
+                      fontSize: "18px",
+                    }}
                     block
                     onClick={() => activateBrowserWallet()}
                   >
@@ -95,6 +126,7 @@ export default function Home() {
                 <a
                   href="https://github.com/McOso/merkle-distributor#how-to-claim---mainnet"
                   target="_blank"
+                  style={{ color: "rgb(255,166,76,1)" }}
                 >
                   How to claim on etherscan
                 </a>
