@@ -38,7 +38,7 @@ export default function Home() {
   return (
     <Container className="md-container">
       <Head>
-        <title>PT Merkle Claimer</title>
+        <title>Catoshi Claimer</title>
       </Head>
       <Container style={{ paddingTop: "10px" }}>
         <ToastContainer

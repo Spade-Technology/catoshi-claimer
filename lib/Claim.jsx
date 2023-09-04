@@ -18,7 +18,6 @@ import axios from "axios";
 export const Claim = () => {
   const { account, chainId, library } = useEthers();
 
-  const address = account.toLocaleLowerCase()
 
   const Catoshi_Network = chainId === Catoshi_Mainnet.chainID
   ? Catoshi_Mainnet
@@ -26,11 +25,7 @@ export const Claim = () => {
   ? Catoshi_Testnet
   : "";
 
-  const merkelData = async() => {
-   
-  }
   const handleClaimClick = async () => {
-   
     const merkleData = await axios.get(Catoshi_Network.ipfs).then((res) => {
       return res.data
     })
@@ -57,9 +52,10 @@ export const Claim = () => {
       const isClaimed = await fetchIsClaimed(
         library.getSigner(),
         MERKEL_ADDRESS,
-        merkleDistibutor_abi,
+        Catoshi_Network.abi,
         proof.index
       );
+      console.log("response claimed", isClaimed)
 
       if (isClaimed.retroPoolV2) {
         toast.info("Drop has already been claimed for this address.", {
@@ -78,11 +74,15 @@ export const Claim = () => {
       await callClaim(
         library.getSigner(),
         MERKEL_ADDRESS,
-        merkleDistibutor_abi,
+        Catoshi_Network.abi,
         params
       );
     };
-    t();
+    t().then((res) => {
+      console.log("response res", res)
+    }).catch((error) => {
+      console.log("response error", error)
+    });
   };
 
   return (
